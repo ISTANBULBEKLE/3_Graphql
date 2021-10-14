@@ -1,13 +1,35 @@
-import myLanguage, {message, getGreeting, name} from './myModule';
-import total, {subtract, divide, multiply} from './math';
+import {GraphQLServer} from 'graphql-yoga';
 
-console.log(myLanguage);
-console.log(message);
-console.log(name);
-console.log(getGreeting('Ekip'));
+//Type definitions (schema)
+const typeDefs = `
+    type Query {
+        hello: String!,
+        name: String!,
+        location: String!,
+        bio: String!,
+    }
+`;
 
-console.log(total(1, 2));
-console.log(subtract(1, 2));
-console.log(divide(1, 2));
-console.log(multiply(1, 2));
+//Resolvers
+const resolvers = {
+    Query: {
+        hello: () => 'Hello world!',
+        name () {
+            return 'Ekip Kalir';
+        },
+        location: () => 'Bristol',
+        bio: () => 'I am a software engineer',
+    }
+};  //end of resolvers
+
+
+const server = new GraphQLServer({
+    typeDefs,
+    resolvers
+});
+
+server.start(() => {
+    console.log('Server is running on localhost:4000');
+});
+
 
